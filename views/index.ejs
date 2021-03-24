@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>eventrex</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+</head>
+
+<body  onload="unMrkAll(<%= out[0].length %>);categoryShow()">
+    
+   
+    <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar">
+            
+            <div class="custom-menu">
+                <!-- <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                </button><br><hr> -->
+            </div>
+            <div class="img bg-wrap text-center py-4" style="background-image: url(images/bg_1.jpg);">
+                <div class="user-logo">
+                    <!-- <div class="img" style="background-image: url(images/logo.jpg);"></div> -->
+                    <h3>eventrex</h3>
+                </div>
+            </div>
+            
+            
+            <!--  <p>  category.forEach((x) { %>
+                <h1 style="color: wheat;text-align: center;">Categories</h1>
+                
+                <ul class="list-unstyled components mb-5">
+                    <li >
+                        <a href="<= x.link %> "><span class="fa fa-trophy mr-3"></span> <x.name %></a>
+                        <br>
+                    </li>
+                </ul>
+                 })   </p> %>  -->
+
+        </nav>
+        <div id="content" class="p-4 p-md-5 pt-5" style="background-color: #181a1b;">
+            <h1 style="color: indigo;" onclick="document.location='/'">Eventrex</h1>
+            <form action="/" method="GET">
+                <div>
+                    <label for="sel1">Search for (month):</label>
+                    <select id="sel1" name="m">
+                        <option>All</option>
+                        <% availDate['month'].forEach((x)=>{ %>
+                        <option><%= mapDates['month'][x] %></option>
+                        <% }) %> </p>
+            
+                    </select>
+                    <label for="sel1">(year):</label>
+                    <select id="sel1" name="y">
+                        <option>All</option>
+                        <% availDate['year'].forEach((x)=>{ %>
+                        <option><%= mapDates['year'][x] %></option>
+                        <% }) %> </p>
+                    </select>
+                    <button type="submit" class="btn btn-sm color-me">GO</button>
+                </div>
+            </form>
+            <br>
+            <ul class="nav nav-pills" role="tablist">
+                 <li class="nav-item">
+                    <a class="nav-link active" onclick="document.getElementById('selectBar').style.display='';unMrkAll(<%= out[0].length %>)" data-toggle="pill" href="#all">All <sup> <b><%= out[0].length %> </b></sup></a>                    
+                </li>
+                <% if (out[0].length > 0){%>
+                    <% var uniqlen=(Object.keys(uniq).length==0)?uniq2:uniq %>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="unMrkAll(<%= out[0].length %>)" data-toggle="pill" href="#uniq">Uniq<sup> <b><%= Object.keys(uniqlen).length %> </b></sup> </a>
+                    </li>
+                <% } %>
+                <% if (hideMenuTab.length !== trackLen){%>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="document.getElementById('selectBar').style.display='';unMrkAll(<%= out[0].length %>)" data-toggle="pill" href="#old">Old <sup> <b><%=out[1].length %></b> </sup> </a>
+                    </li>
+                <% } %>  
+                <% if (hideMenuTab.length !== trackLen){%>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="document.getElementById('selectBar').style.display='';unMrkAll(<%= out[0].length %>)"  data-toggle="pill" href="#new">New <sup> <b> <%= out[2].length %> </b> </sup> </a>
+                    </li>
+                <% } %>
+                <% if (hideMenuTab.length !== trackLen){%>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="document.getElementById('selectBar').style.display='none';unMrkAll(<%= out[0].length %>)"  data-toggle="pill" href="#track">Track <sup> <b><%= trackLen %></b> </sup></a>
+                    </li>
+                <% } %>
+                <% if (hideMenuTab.length !== trackLen){%>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="document.getElementById('selectBar').style.display='';unMrkAll(<%= out[0].length %>)" data-toggle="pill" href="#inaday">InaDay <sup> <b><%= out[3].length %></b> </sup> </a>
+                    </li>
+                <% } %>
+                <% if (Object.keys(category).length !== 0){%>
+                <li class="nav-item">
+                    <a class="nav-link"
+                        onclick="document.getElementById('selectBar').style.display='none';unMrkAll(<%= out[0].length %>)"
+                        data-toggle="pill" href="#categories">Category<sup> <b><%= Object.keys(category).length %> </b></sup></a>
+                </li>
+                <% } %>
+                <% if (out[0].length > 0){%>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="document.getElementById('dateDisplay').style.display='none';document.getElementById('selectBar').style.display='none';unMrkAll(<%= out[0].length %>)" data-toggle="pill" href="#quickADD">Add</a>
+                    </li>
+                <% } %>
+                <!-- <li class="nav-item">
+                    <br>
+                    <div class="form-group">
+                        <input type="text" id="add" class="form-control" placeholder="dih harak" name="text2">
+                    </div>
+                </li>
+                <li class="nav-item"> 
+                    <br>
+                    <button type="submit" onclick="addev()" class="btn btn-primary btn-sm">Add</button>
+                </li> -->
+            </ul>
+            <br>
+            <% if (out[0].length > 0){%>
+                <ul id="selectBar" class="nav2">
+                    <li class="nav-item nav-pills">
+                        <div class="dropdown">
+                            <button id="mark" disabled type="button" class="btn btn-sm  color-me" data-toggle="dropdown">
+                                Selects
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" onclick="selectData(<%= out[0].length %>,'All')" >All</a>
+                                <% out[2].forEach(element => { %>
+                                    <% if (element.event in event){%>
+                                        <a class="dropdown-item" onclick="selectData(<%= out[0].length %>,'<%= element.event %>' )" href="#"><%= element.event %></a>
+                                   <% }%>     
+                                <% }); %>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a>|</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="del" disabled onclick="scanPs(<%= out[0].length %>,{type:'del',value:''});" disabled type="button" class="btn btn-sm color-me">Delete</button>
+                    </li>
+                    <li class="nav-item">
+                        <a>|</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="dropleft">
+                            <button id="label" disabled  disabled type="button"
+                                class="btn btn-sm color-me " data-toggle="dropdown">Label</button>
+                          
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item">
+                                    <b><input oninput="(this.value.length > 0)?document.getElementById('+lab').disabled=false:document.getElementById('+lab').disabled=true"
+                                         id=addLabel placeholder="Create label">
+
+                                         <button id='+lab' disabled  onclick="scanPs(<%= out[0].length %>,{type:'label',value:document.getElementById('addLabel').value} );">+</button>
+                                    </b>
+                                </a>
+                                <%if ( Object.keys(label).length !== 0) { %>
+                                    <a class="dropdown-item" onclick="scanPs(<%= out[0].length %>,{type:'label',value:'null'} );">
+                                        <b>Remove</b>
+                                    </a>
+                                <% } %>
+
+                                <% Object.keys(label).forEach(label => { %>
+                                    <a class="dropdown-item" 
+                                    onclick="scanPs(<%= out[0].length %>,{type:'label',value:<%= label %>});" href="#"><%= label %>
+                                    </a>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a>|</a>
+                    </li>
+                   <li class="nav-item">
+                        <div class="dropleft">
+                            <button id="category" disabled  disabled type="button"
+                                class="btn btn-sm color-me" data-toggle="dropdown">Category</button>
+                          
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item">
+                                    <b><input oninput="(this.value.length > 0)?document.getElementById('+lab1').disabled=false:document.getElementById('+lab1').disabled=true"
+                                         id=addcat placeholder="Create category">
+
+                                         <button id='+lab1' disabled  onclick="scanPs(<%= out[0].length %>,{type:'category',value:document.getElementById('addcat').value} );">+</button>
+                                    </b>
+                                </a>
+                                <%if ( Object.keys(category).length >= 1) { %>
+                                    <a class="dropdown-item" onclick="scanPs(<%= out[0].length %>,{type:'category',value:'null'} );">
+                                        <b>Remove</b>
+                                    </a>
+                                <% } %>
+
+                                <% Object.keys(category).forEach(category => { %>
+                                    <% if (category !== 'null' && category !== ''){  %> 
+                                    <a class="dropdown-item" 
+                                    onclick="scanPs(<%= out[0].length %>,{type:'category',value:<%= category %>} );" href="#"><%= category %>
+                                    </a>
+                                    <% } %> 
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                </ul>
+            <% } %>
+            <br>
+            <%if ( errorMsg['dpMsg'] ){ %> 
+                <script>alert("Cannot find it")</script>
+            <% } %>
+            <div class="tab-content" >
+                <b id="catShow" style="font-size: x-large;"></b>
+                <b id="dateDisplay" class="date">Display data for <%= infoDate[0] %>-<%=infoDate[1] %> </b>
+                <br>    
+                <div id="all" class="tab-pane active">
+                    <ul class="list-unstyled" style="background-color: #181a1b;">
+                    <% out[0].forEach((element,i) => { %>
+                        <li>
+                            <div class="frmlab">
+                                <label class="frmsslab" for="check1">
+                                    <%var hide=(element.label !== 'null')?'':'none'%>
+                                    <input style="display: block;box-shadow: 1px 5px 20px royalblue;background-color: red;" type="checkbox" class="form-check-input" id=<%='all'+i %>  name=""
+                                        value=<%= element.id%> unchecked='' onclick="popMenu(this,<%= out[0].length %>,'all' )">
+                                        <a id=<%='Lall'+i %> value=<%= element.id%> toMrk=<%= element.event %> class="list-group-item list-group-item-action" style="background-color: #181a1b;color: wheat ;">
+                                            <span class="fa"></span> <%= element.event %> <span style="display:<%=hide%>;" class="badge badge-dark"><%=element.label %></span> </a>
+                                        <ul style="list-style-type: square;"> <span></span>
+                                            <li class="date-color">Created on <%= element.date.split(' ').slice(4) %> </li>
+                                            <li class="date-color" > <%= element.date.split(' ').slice(0,2).toString().replace(',',' ') %> ago
+                                            <%= element.Ms%>
+
+                                            </li>
+                                        </ul>
+
+                                </label>
+                            </div>
+                           
+                        </li>
+                        <% }); %>
+                    </ul>
+                    <script>
+                        document.getElementById("check0").checked=false;
+                    </script>
+                </div>
+                <div id="uniq" class="tab-pane fade">
+                  
+                    <% var clrr="#1874c8" %> 
+                    <% if (Object.keys(uniq).length == 0){ %>
+                        <% uniq=uniq2 ;clrr='red' %> 
+                    <% }else if( errorMsg['all'] == true ){ %>
+                        <% uniq=uniq ;clrr='red' %>
+                    <% } %> 
+                    <ul class="list-unstyled" style="background-color: #181a1b;">
+                    <% Object.keys(uniq).reverse().forEach((element,i) => { %>
+                        <li>
+                            <div class="frmlab">
+                                <label class="frmsslab" for="check1">
+                                <%var hide=(element.label !=='null' )?'':'none'%>
+                                <input style="display: block;box-shadow: 1px 5px 20px royalblue;" type="checkbox" class="form-check-input" id=<%='uniq'+i %> name=""
+                                    value=<%= uniq[element.id] %> unchecked='' onclick="popMenu(this,<%=Object.keys(uniq).length %>,'uniq' )">
+                                <a id=<%='Luniq'+i %> value=<%= uniq[element].id %> toMrk=<%= uniq[element].event %>
+                                    class="list-group-item list-group-item-action" style="background-color: #181a1b;color: wheat ;">
+                                    <span class="fa"></span> <%= uniq[element].event %><span style="display:<%=hide%>;" class="badge badge-dark"><%=uniq[element].label %></span> </a>
+                                <a style="color: <%= clrr %>;"> <span></span><%= uniq[element].date %>></a>
+                            </label>
+                            </div>
+                    
+                        </li>
+                        <% }); %>
+                    </ul>
+                
+                </div>
+                <div id="old" class="tab-pane fade">
+                    
+                    <% var fallbackCounter2=0 %>     
+                    <% var notfoundC = 0 %>
+                    <ul class="list-unstyled" style="background-color: #181a1b;">
+                    <% out[1].forEach((element,i) => { %>
+                    <% if (element.event in event){%>
+                        <li>
+                            <div class="frmlab">
+                                <label  for="check1">
+                            <% if (errorMsg['old']) {%>
+                               <% color='red' %> 
+                            <% } else{%>
+                                <% color="rgb(186, 220, 240)" %> 
+                            <% } %>
+                             <input style="display: block;box-shadow: 1px 5px 20px royalblue;" type="checkbox" 
+                                class="form-check-input" id=<%='old'+fallbackCounter2 %> name="filter"
+                                value=<%= element.id %> unchecked=''
+                                onclick="popMenu(this,<%=Object.keys(event).length %>,'old' )">
+                                <a style="background-color: #181a1b;" id=<%='Lold'+fallbackCounter2 %> value=<%= element.id %> toMrk=<%= element.event %>
+                                class="list-group-item list-group-item-action" style="background-color: #181a1b;color: wheat ;">
+                                <span class="fa"></span> 
+                                <%= element.event %> <span class="badge badge-dark"><%=element.label %></span> </a>
+                                <a style="color: <%= color %> ;">Last created <span></span>
+                                    <% var split=element.date.split(' ') %> 
+                                    <%= split.slice(0,2).toString().replace(',',' ')%>on
+                                    <%=split.slice(4,9).toString().replace(',',' ')  %> 
+                                </a><br>
+                                <a class="date-color"> <span></span>
+                                     <%= recentAdd[element.event][1]>1?'Recently add '+recentAdd[element.event][0]:'' %> </a>
+                                <% fallbackCounter2++ %> 
+                                <% notfoundC++ %>
+                            </label>
+                            </div>          
+
+                        <% }else{ %>
+                            <div>
+                            <input style="display: none;" type="checkbox" class="form-check-input" id=<%='old' +fallbackCounter %> name="duplicate" value=
+                             <%= element.id %>
+                             unchecked='' onclick="popMenu(this,<%=Object.keys(event).length %>,'old' )">
+                             <a id=<%='Lold' +fallbackCounter2 %> value=<%= element.id %> toMrk=<%= element.event %> 
+                                class="list-group-item list-group-item-action" style="background-color: #181a1b;color: wheat ;">
+                                <%= fallbackCounter2+1 %> . <span class="fa"></span>
+                                <%= element.event %> <span class="badge badge-dark"><%=element.label %></span>
+                                <% notfoundC++ %>
+
+                            </a>
+                            <a> 
+                                <span></span>
+                                <%= element.date %> 000000000000
+                            </a>
+                            </div>
+                            <% fallbackCounter++ %>
+                        <% } %>
+                        </li>
+                        <%if (notfoundC ==0) {%>
+                            <h1 style="color: red ;">Not found <%= infoDate[0] %>-<%=infoDate[1] %>
+                            </h1>
+                            <b>Display data still</b>
+
+                            <% } %>
+                    <% }); %>
+                    </ul>
+                </div>
+                <div id="new" class="container tab-pane fade">
+                    <% var fallbackCounter=0 %>
+                    <% var notfoundC=0 %>
+                    <ul class="list-unstyled" style="background-color: #181a1b;">
+                    <% out[2].forEach((element,i) => { %>
+                    <% if (element.event in event){%>
+                        <li>
+                            <div class="frmlab">
+                                <label class="frmsslab" for="check1">
+                                <% if (errorMsg['new']) {%>
+                                <input style="display: block;box-shadow: 1px 5px 20px royalblue;" type="checkbox" class="form-check-input" id=<%='new'+fallbackCounter %>
+                                    name="" value=<%= element.id %> unchecked=''
+                                    onclick="popMenu(this,<%=Object.keys(event).length %>,'new' )">
+                                </input>
+                                <a  id=<%='Lnew'+fallbackCounter %> value=<%= element.id %> toMrk=<%= element.event %>
+                                    class="list-group-item list-group-item-action" style="background-color: #181a1b;color: wheat ;">
+                                    <span class="fa"></span> 
+                                    <%= element.event %> <span class="badge badge-dark"><%=element.label %></span>
+                                </a>
+                                <a style="color: red"> <span></span><%= element.date %> </a>
+                                <% fallbackCounter++ %>
+                                <% notfoundC++ %>
+                                <% } else{%>
+                                    <input style="display: block;" type="checkbox" class="form-check-input" id=<%='new'+fallbackCounter %>
+                                        name="" value=<%= element.id %> unchecked=''
+                                        onclick="popMenu(this,<%=Object.keys(event).length %>,'new' )">
+                                    </input>
+                                    <%var hide=(element.label !=='null' )?'':'none'%>
+                                    <a id=<%='Lnew'+fallbackCounter %> value=<%= element.id %> toMrk=<%= element.event %>
+                                        class="list-group-item list-group-item-action" style="background-color: #181a1b;color: wheat ;">
+                                        <%= fallbackCounter+1 %> . <span class="fa"></span> 
+                                        <%= element.event %> <span style="display:<%=hide%>;" class="badge badge-dark"><%=element.label %></span>
+                                    </a>
+                                    <a> <span></span><% var split=element.date.split(' ') %> 
+                                       <%= split.slice(0,2).toString().replace(' ,',' ')%>
+                                       <%=split.slice(4,9).toString().replace(' ,',' ')  %> </a>
+                                    <% fallbackCounter++ %>
+                                    <% notfoundC++ %>
+                                    <% } %>
+                            </label>
+                            </div>
+                    
+                        </li>
+                        
+                        <% } %>
+                    <% }); %>
+                        </li>
+                        <%if (notfoundC ==0) {%>
+                        <h1 style="color: red ;">No event was added on <%= infoDate[0] %>-<%=infoDate[1] %></h1>
+                        <% } %>
+                    </ul>
+                  
+                </div>
+                <div id="inaday" class="container tab-pane fade">
+                    <% var fallbackCounter=0 %>
+                    <ul class="list-unstyled components mb-5" style="background-color: #181a1b;">
+                    <% out[3].forEach((element,i) => { %>
+                        <li>
+                            <div class="frmlab">
+                                <label class="frmsslab" for="check1">
+                    
+                                    <input style="display: block;box-shadow: 1px 5px 20px royalblue;background-color: red;" type="checkbox"
+                                        class="form-check-input" id=<%='inaday'+i %> name="" value=<%= element.id%> unchecked=''
+                                        onclick="popMenu(this,<%= out[0].length %>,'inaday' )"
+                                    >
+                                    <a class="list-group-item list-group-item-action" id=<%='Linaday'+fallbackCounter %> event=<%= element.event %> value=<%= element.id%> style="background-color: #181a1b;color: wheat ;">
+                                        <a style="background-color: #181a1b;color: <%= errorMsg['iday']?'red':'grey' %> ;">On <%= element.date.split(' ').slice(4) %> </a><br>
+                                        <%= element.counter %> event occur <br>
+                                        <span class="fa "></span>
+                                        <b class="warn-color"><%- element.event  %> </b>
+                                    </a>
+                                    <% fallbackCounter++ %>
+                    
+                                </label>
+                            </div>
+                    
+                        </li>
+                        <% }); %>
+                    </ul>
+                </div>
+                <div id="quickADD" class="container tab-pane fade">
+                    <!-- <ul class="list-group list-group-horizontal"> -->
+                    <b>Quick add</b>
+                    <% if (out[1].length > 0) { %> 
+                        
+                    <ul class="nav nav-pills" role="tablist">
+                        
+                        <label class="form-check-label">
+                            <input id="dateChk" type="checkbox" class="form-check-input" value=""
+                                onclick="this.checked?document.getElementById('dateS').style.display='inline':document.getElementById('dateS').style.display='none'">
+                            Change date
+                        </label>
+                    </ul>
+                    <ul class="nav nav-pills" role="tablist">
+                        <!-- <a class="list-group-item">sss</a> -->
+                    </ul>
+                        <br>
+                    <% } %> 
+                        <div>
+                            <input style="color: white ;background-color: black;display: none;"  id=dateS onclick="this.value='3/14/2021, 9:07:10 PM'" 
+                            type="text" style="color: black;" id="datepick" placeholder='MM/DD/YYYY,H:M:S'/>
+                                <span>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" style="border-radius: 0.01cm;background-color:black;color:whitesmoke;" id="add" class="form-control" placeholder="dih harak" name="text2">
+                            <br>    
+                            <button type="submit" onclick="addev()" class="btn btn-primary btn-sm">Add</button>
+                    </div>
+                </div>
+                <div id="categories" class="container tab-pane fade">
+                    <% Object.keys(category).forEach((element,i)=> { %>
+                    <ul class="list-group-horizontal nav" role="tablist">
+                        <li style="list-style-type: square;width: 100%;font-size: medium;color: white;" class="nav-list" onclick="document.location='/?cat=<%= element %>'">
+                            <%= element %> 
+                        </li>
+                    </ul>
+                    <% }); %>
+                </div>
+                <div id="track" class="container tab-pane fade">
+                    <br>
+                    <ul class= "list-group-horizontal nav" role="tablist">
+                        <% Object.keys(event).forEach((element,i) => { %>
+                        <li class="nav-list">
+                            <% var check=notFound[i] %> 
+                            <% if (element == check) {%> 
+                                <del><a style="color: red;" class="nav-link active" data-toggle="tab"
+                                     value="<%= element %>" onclick="gpge(this)" href="<%= element %>"> <%= element %> 
+                                     <sup> <b><%= event[element].length %></b> </sup>  </a></del>
+                            <% } else{ %>
+                                <a class="nav-link active" data-toggle="tab" value="<%= element %>"
+                                     onclick="gpge(this)" href="<%= element %>"> <%= element %> <sup> <b><%= event[element].length %></b> </sup>  </a>
+                            <% } %>
+                        </li>
+                        
+                        <% }); %>
+                    </ul>
+                    <b>
+                    <% Object.keys(event).forEach(element => { %>
+                        
+                        <div id="<%= element %>" class="container tab-pane" style="display:none;color: blanchedalmond;"> 
+                                <% event[element].forEach((e,i) => { %>
+                                <ul style="list-style-type: square;"> <span></span>
+                                    <li style="box-shadow: 1px red;">Event <%= event[element][i]["event"] %>
+                                    occured <%= event[element][i]["count"] %> time on <%= event[element][i]["date"] %> </li>
+                                </ul>
+                                <% }); %> 
+                        </div>
+                    <% }); %>
+                                
+                </div> 
+                
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
